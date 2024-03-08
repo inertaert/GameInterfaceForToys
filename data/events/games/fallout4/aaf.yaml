@@ -1,5 +1,5 @@
 - Sex Start:
-    regex: ".+DD: Player in AAF animation.*"
+    regex: .+BDH-INFO - OnAnimationStart.*
     function: sex_start_simple
     group: default
     toy_class: vibrator
