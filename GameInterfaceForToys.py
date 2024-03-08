@@ -286,7 +286,6 @@ def open_config_modal():
     for k, v in config_fields.items():
         if v == 'ENABLED_INTERFACES':
             config_layout.append([sg.Text('Enabled Interfaces:'), sg.Radio(INTERFACE_LOG_READER, 'interfaces', key=INTERFACE_LOG_READER, default=INTERFACE_LOG_READER in settings.ENABLED_INTERFACES),
-                                  sg.Radio(INTERFACE_SCREEN_READER, 'interfaces', key=INTERFACE_SCREEN_READER, default=INTERFACE_SCREEN_READER in settings.ENABLED_INTERFACES),
                                   sg.Radio(INTERFACE_MEMORY_READER, 'interfaces', key=INTERFACE_MEMORY_READER, default=INTERFACE_MEMORY_READER in settings.ENABLED_INTERFACES),
                                   ])
         elif v == 'LOG_PATH':
@@ -352,8 +351,6 @@ def open_config_modal():
                     interfaces = []
                     if values[INTERFACE_LOG_READER] == True:
                         interfaces += [INTERFACE_LOG_READER]
-                    elif values[INTERFACE_SCREEN_READER] == True:
-                        interfaces += [INTERFACE_SCREEN_READER]
                     elif values[INTERFACE_MEMORY_READER] == True:
                         interfaces += [INTERFACE_MEMORY_READER]
                     settings.ENABLED_INTERFACES = interfaces
@@ -401,8 +398,6 @@ if __name__ == "__main__":
         for interface in settings.ENABLED_INTERFACES:
             if interface == INTERFACE_LOG_READER:
                 ssi = LogReaderInterface(toy_type=settings.TOY_TYPE)
-            elif interface == INTERFACE_SCREEN_READER:
-                ssi = PixelReaderInterface(toy_type=settings.TOY_TYPE)
             elif interface == INTERFACE_MEMORY_READER:
                 ssi = MemoryReaderInterface(toy_type=settings.TOY_TYPE)
 
