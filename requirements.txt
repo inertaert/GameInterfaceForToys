@@ -8,7 +8,5 @@ git+https://github.com/pybluez/pybluez.git#egg=pybluez
 flask
 requests-oauthlib
 opencv-contrib-python
-dxcam
 readwritememory
 pillow
-pywin32
