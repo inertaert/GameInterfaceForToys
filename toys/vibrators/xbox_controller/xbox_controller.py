@@ -85,3 +85,72 @@ class XboxControllerInterface(Vibrator):
             "battery": -1,
             "enabled": True
         }}
+
+
+class XboxControllerInterfacePyGame(Vibrator):
+    def __init__(self):
+        import pygame
+        pygame.init()
+
+        self.controller_id = None
+
+        # Try to find an Xbox controller, connect to the first one
+        # fixme: Should probably accommodate multiple Xbox Controllers. Currently it just takes the first one.
+        #  I'll devote time to this if users complain about it.
+        for i in range(0, pygame.joystick.get_count()):
+            if "Xbox" in pygame.joystick.Joystick(i).get_name():
+                print(f"Detected controller: {pygame.joystick.Joystick(i).get_name()}, id={i}")
+                self.controller_id = i
+                break
+
+        self.xbox_controller = pygame.joystick.Joystick(self.controller_id)
+
+        self.taskList = []
+        t1 = threading.Thread(target=self.t1, args=(), daemon=True)
+        t1.start()
+        super().__init__("Xbox controller")
+
+
+    def t1(self):
+        while True:
+            time.sleep(0.5)
+
+            if self.taskList:
+                duration, strength = self.taskList.pop(0)  # FIFO
+                print(f"XBOX PYGAME duration: {duration}")
+                print(f"XBOX PYGAME strength: {strength}")
+                strength = strength / 100  # Recast to 0.0-1.0 float
+                duration = duration / 100  # fixme: Is duration supposed to be seconds, centi- or milliseconds?
+                self.xbox_controller.rumble(strength, strength, 1000)  # Bug: duration argument does nothing.
+                time.sleep(duration)
+                self.xbox_controller.stop_rumble()
+
+
+    def shutdown(self):
+        pass
+
+    def connect(self):
+        return
+
+    def check_in(self):
+        return
+
+
+    def vibrate(self, duration, strength, pattern="", toys=[]):
+        # print('addCommand',self.command)
+        self.taskList.append([duration, strength])
+
+
+    def stop(self):
+        # print('cleanTaskList')
+        self.taskList.clear()
+
+    def get_toys(self):
+        return {'Xbox Controller': {
+            "name": "Xbox Controller",
+            "interface": self.properties['name'],
+            "id": "Xbox Controller",
+            "battery": -1,
+            "enabled": True
+        }}
+

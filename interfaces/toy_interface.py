@@ -11,6 +11,7 @@ import yaml
 import traceback
 import math
 import copy
+import platform
 
 from common.constants import *
 from common.util import *
@@ -39,8 +40,13 @@ class ToyInterface(object):
                 from toys.vibrators.lovense.lovense import LovenseInterface
                 tmp += [LovenseInterface()]
             elif toy == TOY_XBOXCONTROLLER:
-                from toys.vibrators.xbox_controller.xbox_controller import XboxControllerInterface
-                tmp += [XboxControllerInterface()]
+                if platform.system() == "Windows":
+                    from toys.vibrators.xbox_controller.xbox_controller import XboxControllerInterface
+                    tmp += [XboxControllerInterface()]
+                else:
+                    # Linux support via PyGame
+                    from toys.vibrators.xbox_controller.xbox_controller import XboxControllerInterfacePyGame
+                    tmp += [XboxControllerInterfacePyGame()]
             elif toy == TOY_BUTTPLUG:
                 from toys.vibrators.buttplugio.buttplug import ButtplugInterface
                 tmp += [ButtplugInterface()]
