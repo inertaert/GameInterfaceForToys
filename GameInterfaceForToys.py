@@ -361,9 +361,10 @@ def open_config_modal():
                                             [sg.Radio(INTERFACE_LOG_READER + " " + "(Skyrim, Fallout 4, Mount & Blade 2: Bannerlord, Night of Revenge)", 'interfaces', key=INTERFACE_LOG_READER,
                                                      default=INTERFACE_LOG_READER in settings.ENABLED_INTERFACES, enable_events=True)],
                                             [sg.Radio(INTERFACE_SCREEN_READER + " " + "(Elden Ring)", 'interfaces', key=INTERFACE_SCREEN_READER,
-                                                     default=INTERFACE_SCREEN_READER in settings.ENABLED_INTERFACES, enable_events=True)],
+                                                      # fixme: This platform conditional should probably be defined & handled in data instead of code.
+                                                     default=INTERFACE_SCREEN_READER in settings.ENABLED_INTERFACES, enable_events=True, disabled=True if platform.system() != "Windows" else False)],
                                             [sg.Radio(INTERFACE_MEMORY_READER, 'interfaces', key=INTERFACE_MEMORY_READER,
-                                                     default=INTERFACE_MEMORY_READER in settings.ENABLED_INTERFACES, enable_events=True)]
+                                                     default=INTERFACE_MEMORY_READER in settings.ENABLED_INTERFACES, enable_events=True, disabled=True if platform.system() != "Windows" else False)]
                                             ]
                                   )
                          ]
